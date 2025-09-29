@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
 
-df = pd.read_csv("data/ampliconstats_freads.csv")
+df = pd.read_csv("data/ampliconstats_frperc.csv")
 
 # Keep only amplicon columns
 amplicon_cols = df.columns[5:]
@@ -23,19 +23,12 @@ df_grouped = df_grouped.sort_values(['method_order', 'Depth_numeric'])
 # Set Method_Depth as index for heatmap
 heatmap_data = df_grouped.set_index('Method_Depth')[amplicon_cols]
 
-# Cap the maximum at 15,000
-heatmap_data_capped = heatmap_data.clip(upper=15000)
-
-# Create a TwoSlopeNorm to give more resolution at low values
-# We'll center the colormap at 500 to stretch low values
-norm = TwoSlopeNorm(vmin=0, vcenter=500, vmax=15000)
-
 # Plot the heatmap
 plt.figure(figsize=(20, 12))
-sns.heatmap(heatmap_data_capped, cmap="viridis", norm=norm, cbar_kws={'label': 'FREADS'})
-plt.title("Mean Amplicon Read Counts by Method and Depth")
+sns.heatmap(heatmap_data, cmap="viridis", cbar_kws={'label': 'FRPERC'})
+plt.title("Mean Read Percentage Distribution Between Amplicons by Method and Depth")
 plt.xlabel("Amplicons")
 plt.ylabel("Method / Depth")
 plt.tight_layout()
-plt.savefig("samtools_ampliconstats_freads_heatmap.png", dpi=300)
+plt.savefig("samtools_ampliconstats_frperc_heatmap.png", dpi=300)
 plt.close()

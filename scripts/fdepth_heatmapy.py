@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
 
-df = pd.read_csv("data/ampliconstats_freads.csv")
+df = pd.read_csv("data/ampliconstats_fdepth.csv")
 
 # Keep only amplicon columns
 amplicon_cols = df.columns[5:]
@@ -32,10 +32,10 @@ norm = TwoSlopeNorm(vmin=0, vcenter=500, vmax=15000)
 
 # Plot the heatmap
 plt.figure(figsize=(20, 12))
-sns.heatmap(heatmap_data_capped, cmap="viridis", norm=norm, cbar_kws={'label': 'FREADS'})
-plt.title("Mean Amplicon Read Counts by Method and Depth")
+sns.heatmap(heatmap_data_capped, cmap="viridis", norm=norm, cbar_kws={'label': 'FDEPTH'})
+plt.title("Mean Amplicon Read Depth by Method and Depth")
 plt.xlabel("Amplicons")
 plt.ylabel("Method / Depth")
 plt.tight_layout()
-plt.savefig("samtools_ampliconstats_freads_heatmap.png", dpi=300)
+plt.savefig("samtools_ampliconstats_fdepth_heatmap.png", dpi=300)
 plt.close()

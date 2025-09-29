@@ -1,6 +1,10 @@
 import pandas as pd
+from scipy.stats import chi2_contingency
+from statsmodels.stats.multitest import multipletests
+import numpy as np
+import matplotlib.pyplot as plt
 
-# This script requires the 'data/pango_lineages.csv' file to be present.
+
 df = pd.read_csv("data/pango_lineages.csv")
 
 # 1. Isolate the control data (method='raw' and depth='all')
@@ -23,20 +27,12 @@ comparison_df = df_merged[~((df_merged['method'] == 'raw') & (df_merged['depth']
 
 # 5. Define the new classification function with parental logic
 def classify_mismatch(row):
-    """
-    Classifies the mismatch type with four categories:
-    1. No Mismatch: Aliased lineages are identical.
-    2. Aliased Mismatch: Aliased differ, but unaliased are identical.
-    3. Parental Mismatch: Unaliased have a parent/sublineage relationship.
-    4. True Mismatch: Unaliased are different and unrelated.
-    """
     # Handle potential missing data by converting to string
     lineage = str(row['lineage'])
     control_lineage = str(row['control_lineage'])
     unaliased = str(row['pango_lineage_unaliased'])
     control_unaliased = str(row['control_unaliased_lineage'])
 
-    # Category 1: Perfect match on the primary (aliased) lineage call
     if lineage == control_lineage:
         return 'No Mismatch'
 
@@ -46,19 +42,15 @@ def classify_mismatch(row):
     if control_lineage == "Unassigned":
         return 'unassigned to assigned'
 
-    # Category 2: Aliased lineages differ, but unaliased are identical
     if unaliased == control_unaliased:
         return 'Aliased Mismatch'
 
-    # Category 3: Check for parental relationship on unaliased lineages
-    # We add a '.' to ensure we match whole numbers (e.g., B.1 is parent of B.1.1, not B.11)
     if control_unaliased.startswith(unaliased + '.'):
         return 'Gain of Specificity'
 
     if unaliased.startswith(control_unaliased + '.'):
         return 'Loss of Specificity'
 
-    # Category 4: If none of the above, it's a significant, non-parental difference
     return 'Other Mismatch'
 
 # 6. Apply the new classification logic
@@ -87,41 +79,20 @@ summary_table = pd.crosstab(
     columns=comparison_df['mismatch_type']
 )
 
-if summary_table.empty:
-    print("No comparisons were made.")
-else:
-    # Define the desired column order for the final report
-    final_columns = ['No Mismatch', 'Loss of Specificity', 'Gain of Specificity', 'Other Mismatch', 'Classification Failure']
+final_columns = ['No Mismatch', 'Loss of Specificity', 'Gain of Specificity', 'Other Mismatch', 'Classification Failure']
     
-    # Ensure all category columns exist, even if there are no instances
-    for col in final_columns:
-        if col not in summary_table.columns:
-            summary_table[col] = 0
-    
-    # Reorder columns for logical presentation
-    print(summary_table[final_columns])
+print(summary_table[final_columns])
 
+# 9. Generate a Stacked Bar Plot
 
-
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
-# This code assumes you have a pandas DataFrame named 'summary_table'
-# with a multi-index of ('method', 'depth').
-
-# --- 1. Prepare the DataFrame for Plotting ---
-# Reset the index to make 'method' and 'depth' regular columns
 df_for_plotting = summary_table.reset_index()
-# Convert the 'depth' column to a numeric type
+
 df_for_plotting['depth'] = pd.to_numeric(df_for_plotting['depth'])
-# Sort the values correctly
+
 df_for_plotting = df_for_plotting.sort_values(by=['method', 'depth'])
-# Set the index back for plotting
+
 df_sorted = df_for_plotting.set_index(['method', 'depth'])
 
-
-# Define a logical order for the stacks (from bottom to top).
 plot_columns = [
     'No Mismatch',
     'Loss of Specificity',
@@ -129,12 +100,7 @@ plot_columns = [
     'Other Mismatch',
     'Classification Failure'
 ]
-# Ensure all columns exist in the DataFrame.
-for col in plot_columns:
-    if col not in df_sorted.columns:
-        df_sorted[col] = 0
 
-# --- 2. Create the Plot ---
 fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(12, 10), sharey=True)
 fig.suptitle('Lineage Classification Outcomes by Method and Depth', fontsize=16, y=0.98)
 
@@ -163,43 +129,26 @@ for i, method in enumerate(methods):
     if ax.get_legend():
         ax.get_legend().remove()
 
-# --- 3. Add a Shared Legend and Save the Figure ---
 handles, labels = ax.get_legend_handles_labels()
 fig.legend(handles, labels, title='Mismatch Type', bbox_to_anchor=(1.05, 0.7))
 
 plt.tight_layout(rect=[0, 0, 0.9, 0.96])
 
 plt.savefig(
-    'classification_summary.png',
+    'pangolin_classification_summary.png',
     dpi=300,
     bbox_inches='tight'
 )
 
-print("Chart has been saved as 'classification_summary.png'")
+print("Chart has been saved as 'pangolin_classification_summary.png'")
 
+# 10. Determine if statistically significant
 
-import pandas as pd
-from scipy.stats import chi2_contingency
-from statsmodels.stats.multitest import multipletests
-import numpy as np
-
-# This code assumes you have your data in a DataFrame named 'df_sorted'
-# with a multi-index of ('method', 'depth').
-
-# --- Statistical Analysis ---
-
-# 1. Set up the "perfect" control group robustly.
 total_samples = df_sorted.iloc[0].sum()
 
-# --- FIX STARTS HERE ---
-# Create a Series of all zeros with the correct index
 control_row = pd.Series(0, index=df_sorted.columns)
-# Explicitly set the count in the 'No Mismatch' column, regardless of its position
 control_row['No Mismatch'] = total_samples
-# --- FIX ENDS HERE ---
 
-
-# 2. Loop through each experimental group and perform the test.
 results = []
 for index, row in df_sorted.iterrows():
     # Combine rows and filter out uninformative zero-sum columns
@@ -221,7 +170,7 @@ for index, row in df_sorted.iterrows():
 
 results_df = pd.DataFrame(results)
 
-# 3. Apply the Bonferroni correction for multiple comparisons.
+# 11. Apply the Bonferroni correction for multiple comparisons.
 reject, p_values_corrected, _, _ = multipletests(
     results_df['p_value'],
     alpha=0.05,
@@ -236,3 +185,4 @@ results_df = results_df.sort_values(by=['method', 'depth'])
 
 print("Statistical Significance Results:")
 print(results_df)
+results_df.to_csv("pangolin_fidelity_stats.csv", index=False)
