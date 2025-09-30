@@ -7,9 +7,8 @@ pango_df = pd.read_csv("data/pango_lineages.csv")
 
 # Filter the pango_df for method=='all' and depth=='all'
 pango_df_filtered = pango_df[(pango_df['method'] == 'raw') & (pango_df['depth'] == 'all')]
-print(pango_df_filtered)
 
-    # Merge the two dataframes
+# Merge the two dataframes
 merged_df = pd.merge(freyja_df, pango_df_filtered, left_on='Sample', right_on='sample', how='inner')
 
 # Compare the lineages
