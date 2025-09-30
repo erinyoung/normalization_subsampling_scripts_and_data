@@ -1,5 +1,4 @@
 import pandas as pd
-import io
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -36,3 +35,4 @@ plt.xlabel('Subsampling Depth Target', fontsize=12)
 plt.ylabel('Covered Bases', fontsize=12)
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.savefig('boxplot_covbases.png', dpi=300)
+plt.close()

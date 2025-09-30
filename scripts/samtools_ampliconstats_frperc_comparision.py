@@ -1,6 +1,5 @@
 import pandas as pd
 from scipy.stats import mannwhitneyu
-import numpy as np
 
 def analyze_coverage_evenness():
     """

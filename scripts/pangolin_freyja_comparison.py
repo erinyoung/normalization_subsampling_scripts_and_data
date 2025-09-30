@@ -1,5 +1,4 @@
 import pandas as pd
-import io
 
 freyja_df = pd.read_csv("data/freyja_results.csv")
 
