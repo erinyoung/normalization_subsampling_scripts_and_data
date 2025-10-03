@@ -79,7 +79,7 @@ def time_to_seconds(time_str):
         return float(parts[0])
 
 
-df = pd.read_csv("data/total_resources.csv")
+df = pd.read_csv("data/total_resources.csv", sep=",")
 
 # 2. Reshape the DataFrame from wide to long format
 df_long = df.melt(id_vars=['sample'], var_name='metric', value_name='value')
