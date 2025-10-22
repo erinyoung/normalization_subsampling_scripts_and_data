@@ -109,7 +109,7 @@ def plot_time_summary_figure_by_method(df):
     
     # --- Final Touches ---
     plt.tight_layout(rect=[0, 0, 0.88, 0.95])
-    plt.savefig("Figure4_Final.png", dpi=300)
+    plt.savefig("Figure4.png", dpi=300)
     plt.show()
 
 # --- 3. Main Execution ---
