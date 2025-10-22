@@ -150,6 +150,7 @@ plt.xlabel('Method', fontsize=12)
 plt.ylabel('Average CPU Usage (percent)', fontsize=12)
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.savefig('cpu_usage_by_method_and_depth.png', dpi=300)
+plt.savefig('cpu_usage_by_method_and_depth.svg', dpi=300)
 plt.close()
 
 
@@ -171,6 +172,7 @@ for stp in steps + ['seqkit']:
     plt.ylabel('Average CPU Usage (percent)', fontsize=12)
     plt.grid(True, linestyle='--', alpha=0.6)
     plt.savefig(f"cpu_usage_by_method_and_depth_for_{stp}.png", dpi=300)
+    plt.savefig(f"cpu_usage_by_method_and_depth_for_{stp}.svg", dpi=300)
     plt.close()
 
 
@@ -200,6 +202,7 @@ plt.xlabel('Method', fontsize=12)
 plt.ylabel('Average Memory Usage (kbytes)', fontsize=12)
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.savefig('memory_usage_by_method_and_depth.png', dpi=300)
+plt.savefig('memory_usage_by_method_and_depth.svg', dpi=300)
 plt.close()
 
 
@@ -222,6 +225,7 @@ for stp in steps + ['seqkit']:
     plt.ylabel('Average Memory Usage (kbytes)', fontsize=12)
     plt.grid(True, linestyle='--', alpha=0.6)
     plt.savefig(f"memory_usage_by_method_and_depth_for_{stp}.png", dpi=300)
+    plt.savefig(f"memory_usage_by_method_and_depth_for_{stp}.svg", dpi=300)
     plt.close()
 
 print("getting together time plot for all steps")
@@ -249,6 +253,7 @@ plt.xlabel('Method', fontsize=12)
 plt.ylabel('Average Time Usage (seconds)', fontsize=12)
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.savefig('time_usage_by_method_and_depth.png', dpi=300)
+plt.savefig('time_usage_by_method_and_depth.svg', dpi=300)
 plt.close()
 
 
@@ -271,6 +276,7 @@ for stp in steps + ['seqkit']:
     plt.ylabel('Average Time Usage (seconds)', fontsize=12)
     plt.grid(True, linestyle='--', alpha=0.6)
     plt.savefig(f"time_usage_by_method_and_depth_for_{stp}.png", dpi=300)
+    plt.savefig(f"time_usage_by_method_and_depth_for_{stp}.svg", dpi=300)
     plt.close()
 
 step_order = [
@@ -312,6 +318,7 @@ plt.xticks(rotation=90, ha='right')
 plt.tight_layout()
 
 plt.savefig("time_usage_by_method_and_depth_bar_chart.png", dpi=300)
+plt.savefig("time_usage_by_method_and_depth_bar_chart.svg", dpi=300)
 plt.close()
 
 # Plot stacked bar chart
@@ -331,4 +338,5 @@ plt.xticks(rotation=90, ha='right')
 plt.tight_layout()
 
 plt.savefig("time_usage_by_method_and_depth_bar_chart_logscale.png", dpi=300)
+plt.savefig("time_usage_by_method_and_depth_bar_chart_logscale.svg", dpi=300)
 plt.close()

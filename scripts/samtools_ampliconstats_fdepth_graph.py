@@ -64,4 +64,9 @@ plt.savefig(
     bbox_inches='tight', 
     dpi=300
     )
-plt.show()
+plt.savefig(
+    'samtools_ampliconstats_fdepth_counts_average_plot.svg', 
+    bbox_inches='tight', 
+    dpi=300
+    )
+plt.close()

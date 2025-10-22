@@ -139,7 +139,12 @@ plt.savefig(
     dpi=300,
     bbox_inches='tight'
 )
-
+plt.savefig(
+    'pangolin_classification_summary.svg',
+    dpi=300,
+    bbox_inches='tight'
+)
+plt.close()
 print("Chart has been saved as 'pangolin_classification_summary.png'")
 
 # 10. Determine if statistically significant
