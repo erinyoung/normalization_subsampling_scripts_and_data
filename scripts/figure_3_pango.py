@@ -126,6 +126,4 @@ axes[1, 1].legend(handles=legend_elements, title='Outcome', loc='upper left', bb
 
 # Adjust layout to make space for the legends
 plt.tight_layout(rect=[0, 0, 0.9, 0.96])
-plt.savefig("Figure3.png", dpi=300)
-
-plt.show()
+plt.savefig("Figure3.tiff", dpi=300, format="tiff", pil_kwargs={"compression": "tiff_lzw"})

@@ -82,7 +82,7 @@ def plot_time_summary_figure_by_method(df):
     avg_times = avg_times.sort_values(by=['method', 'depth_order'])
 
     fig, axes = plt.subplots(3, 1, figsize=(18, 20), sharex=False)
-    fig.suptitle("Figure 4: Average Pipeline Processing Time", fontsize=20, y=0.98)
+    fig.suptitle("Average Pipeline Processing Time", fontsize=20, y=0.98)
 
     # --- Panel A: All Data ---
     all_df = avg_times.copy()
@@ -109,8 +109,7 @@ def plot_time_summary_figure_by_method(df):
     
     # --- Final Touches ---
     plt.tight_layout(rect=[0, 0, 0.88, 0.95])
-    plt.savefig("Figure4.png", dpi=300)
-    plt.show()
+    plt.savefig("Figure4.tiff", dpi=300, format="tiff", pil_kwargs={"compression": "tiff_lzw"})
 
 # --- 3. Main Execution ---
 if __name__ == "__main__":

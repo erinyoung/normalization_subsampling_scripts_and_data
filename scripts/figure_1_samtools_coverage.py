@@ -100,6 +100,6 @@ plt.tight_layout()
 fig.subplots_adjust(right=0.87)
 
 # Save the combined figure
-plt.savefig("Figure1.png", dpi=300)
+plt.savefig("Figure1.tiff", dpi=300, format="tiff", pil_kwargs={"compression": "tiff_lzw"})
 
 

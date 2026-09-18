@@ -63,7 +63,7 @@ def load_and_reshape_data(filepath):
 def plot_resource_boxplots(df):
     """Creates the side-by-side boxplots for Memory and CPU (Figure 5)."""
     fig, axes = plt.subplots(1, 2, figsize=(22, 8))
-    fig.suptitle("Figure 5: Computational Resource Utilization by Method and Depth", fontsize=18, y=1.02)
+    fig.suptitle("Computational Resource Utilization by Method and Depth", fontsize=18, y=0.98)
 
     palette = {'raw': '#0072B2', 'bbnorm': '#D55E00', 'seqkit': '#009E73'}
     depth_order = ['10', '30', '50', '100', '200', '300', '400', '500', '1000', '5000', '10000', 'all']
@@ -117,9 +117,8 @@ def plot_resource_boxplots(df):
     axes[1].legend(handles, labels, title='Method', loc='upper left', bbox_to_anchor=(1.02, 1))
     
     # Adjust layout to make space for the legend
-    plt.tight_layout(rect=[0, 0, 0.9, 0.96])
-    plt.savefig("Figure5.png", dpi=300)
-    plt.show()
+    plt.tight_layout(rect=[0, 0, 0.88, 0.93])
+    plt.savefig("Figure5.tiff", dpi=300, bbox_inches="tight", format="tiff", pil_kwargs={"compression": "tiff_lzw"})
 
 # --- 3. Main Execution ---
 if __name__ == "__main__":
