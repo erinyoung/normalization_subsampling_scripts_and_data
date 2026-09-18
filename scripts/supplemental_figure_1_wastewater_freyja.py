@@ -143,6 +143,6 @@ for base_sample in base_samples:
     ax.spines['right'].set_visible(False)
     
     plt.tight_layout()
-    output_filename = f'supplemental_figures/wastewater_lineage_{base_sample}.png'
-    plt.savefig(output_filename, dpi=300, bbox_inches='tight')
+    output_filename = f'supplemental_figures/wastewater_lineage_{base_sample}.pdf'
+    plt.savefig(output_filename, dpi=300, bbox_inches='tight', format='pdf')
     plt.close(fig)

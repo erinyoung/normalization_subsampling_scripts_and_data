@@ -130,8 +130,8 @@ def create_multi_panel_supplemental_figure(df, resource_type, output_dir):
     fig.legend(handles, labels, title='Method', loc='upper right', bbox_to_anchor=(0.99, 0.98))
 
     plt.tight_layout(rect=[0, 0, 1, 0.96])
-    filename = f"Supplemental_Figure_{resource_type.capitalize()}_Usage.png"
-    plt.savefig(os.path.join(output_dir, filename), dpi=300)
+    filename = f"Supplemental_Figure_{resource_type.capitalize()}_Usage.pdf"
+    plt.savefig(os.path.join(output_dir, filename), dpi=300, bbox_inches="tight", format="pdf")
     plt.show()
 
 # --- 3. Main Execution ---
